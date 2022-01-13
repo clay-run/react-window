@@ -637,7 +637,8 @@ export default function createGridComponent({
         );
         const isRtl = direction === 'rtl';
         itemStyleCache[key] = style = {
-          position: isPinned ? 'fixed' : 'absolute',
+          position: isPinned ? 'sticky' : 'absolute',
+          zIndex: isPinned ? 999 : 99,
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
           top: getRowOffset(this.props, rowIndex, this._instanceProps),
