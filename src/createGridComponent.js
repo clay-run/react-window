@@ -429,8 +429,6 @@ export default function createGridComponent({
           rowIndex++
         ) {
           // always render pinned columns
-          let pinnedOffset = 0
-
           for(
             let pinnedColumnIndex = 0;
             pinnedColumnIndex < pinnedColumnsCount;
@@ -446,8 +444,6 @@ export default function createGridComponent({
                 style: this._getItemStyle(rowIndex, pinnedColumnIndex, true),
               })
             );
-
-            pinnedOffset += this._getEstimatedColumnWidth(pinnedColumnIndex)
           }
 
           for (
@@ -462,7 +458,7 @@ export default function createGridComponent({
                 isScrolling: useIsScrolling ? isScrolling : undefined,
                 key: itemKey({ columnIndex, data: itemData, rowIndex }),
                 rowIndex,
-                style: this._getItemStyle(rowIndex, columnIndex, false, pinnedOffset),
+                style: this._getItemStyle(rowIndex, columnIndex, false),
               })
             );
           }
