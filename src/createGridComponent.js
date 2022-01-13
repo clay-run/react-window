@@ -419,7 +419,13 @@ export default function createGridComponent({
         columnStartIndex,
         columnStopIndex,
       ] = this._getHorizontalRangeToRender();
+
       const [rowStartIndex, rowStopIndex] = this._getVerticalRangeToRender();
+
+      let estimatedWidth = getEstimatedTotalWidth(
+        this.props,
+        this._instanceProps
+      );
 
       const items = [];
       if (columnCount > 0 && rowCount) {
@@ -472,10 +478,10 @@ export default function createGridComponent({
               key: rowIndex,
               style: {
                 position: 'absolute',
-                height: getRowHeight(this.props, rowIndex, this._instanceProps),
-                top: getRowOffset(this.props, rowIndex, this._instanceProps),
+                height: this._getItemStyle(rowIndex, 0, false).height,
+                top: this._getItemStyle(rowIndex, 0, false).top,
                 left: 0,
-                width: 90000000000,
+                width: estimatedWidth,
               },
             })
           )
