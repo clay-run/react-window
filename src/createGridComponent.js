@@ -471,8 +471,10 @@ export default function createGridComponent({
               children: items,
               ref: innerRef,
               style: {
+                position: 'relative',
                 height: this._getItemStyle(rowIndex, 0, false).height,
                 top: this._getItemStyle(rowIndex, 0, false).top,
+                left: 0,
                 width: 90000000000,
               },
             })
