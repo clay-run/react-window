@@ -66,6 +66,7 @@ export type Props<T> = {|
   children: RenderComponent<T>,
   className?: string,
   columnCount: number,
+  pinnedColumnsCount?: number,
   columnWidth: itemSize,
   direction: Direction,
   height: number,
