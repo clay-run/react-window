@@ -428,13 +428,15 @@ export default function createGridComponent({
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
+          let rowItems = []
+
           // always render pinned columns
           for(
             let pinnedColumnIndex = 0;
             pinnedColumnIndex < pinnedColumnsCount;
             pinnedColumnIndex++
           ) {
-            items.push(
+            rowItems.push(
               createElement(children, {
                 columnIndex: pinnedColumnIndex,
                 data: itemData,
@@ -451,7 +453,7 @@ export default function createGridComponent({
             columnIndex <= columnStopIndex;
             columnIndex++
           ) {
-            items.push(
+            rowItems.push(
               createElement(children, {
                 columnIndex,
                 data: itemData,
@@ -462,6 +464,19 @@ export default function createGridComponent({
               })
             );
           }
+
+          // wrap items into divs
+          items.push(
+            createElement('div', {
+              children: items,
+              ref: innerRef,
+              style: {
+                height: this._getItemStyle(rowIndex, 0, false).height,
+                top: this._getItemStyle(rowIndex, 0, false).top,
+                width: 90000000000,
+              },
+            })
+          )
         }
       }
 
@@ -471,6 +486,7 @@ export default function createGridComponent({
         this.props,
         this._instanceProps
       );
+
       const estimatedTotalWidth = getEstimatedTotalWidth(
         this.props,
         this._instanceProps
