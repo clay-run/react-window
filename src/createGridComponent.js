@@ -403,6 +403,7 @@ export default function createGridComponent({
         innerRef,
         innerElementType,
         innerTagName,
+        pinnedColumnsCount,
         itemData,
         itemKey = defaultItemKey,
         outerElementType,
@@ -427,8 +428,30 @@ export default function createGridComponent({
           rowIndex <= rowStopIndex;
           rowIndex++
         ) {
+          // always render pinned columns
+          let pinnedOffset = 0
+
+          for(
+            let pinnedColumnIndex = 0;
+            pinnedColumnIndex < pinnedColumnsCount;
+            pinnedColumnIndex++
+          ) {
+            items.push(
+              createElement(children, {
+                columnIndex: pinnedColumnIndex,
+                data: itemData,
+                isScrolling: useIsScrolling ? isScrolling : undefined,
+                key: itemKey({ columnIndex: pinnedColumnIndex, data: itemData, rowIndex }),
+                rowIndex,
+                style: this._getItemStyle(rowIndex, pinnedColumnIndex, true),
+              })
+            );
+
+            pinnedOffset += this._getEstimatedColumnWidth(pinnedColumnIndex)
+          }
+
           for (
-            let columnIndex = columnStartIndex;
+            let columnIndex = Math.max(columnStartIndex, pinnedColumnsCount);
             columnIndex <= columnStopIndex;
             columnIndex++
           ) {
@@ -439,7 +462,7 @@ export default function createGridComponent({
                 isScrolling: useIsScrolling ? isScrolling : undefined,
                 key: itemKey({ columnIndex, data: itemData, rowIndex }),
                 rowIndex,
-                style: this._getItemStyle(rowIndex, columnIndex),
+                style: this._getItemStyle(rowIndex, columnIndex, false, pinnedOffset),
               })
             );
           }
@@ -595,8 +618,8 @@ export default function createGridComponent({
     // So that pure component sCU will prevent re-renders.
     // We maintain this cache, and pass a style prop rather than index,
     // So that List can clear cached styles and force item re-render if necessary.
-    _getItemStyle: (rowIndex: number, columnIndex: number) => Object;
-    _getItemStyle = (rowIndex: number, columnIndex: number): Object => {
+    _getItemStyle: (rowIndex: number, columnIndex: number, isPinned: boolean) => Object;
+    _getItemStyle = (rowIndex: number, columnIndex: number, isPinned?: boolean): Object => {
       const { columnWidth, direction, rowHeight } = this.props;
 
       const itemStyleCache = this._getItemStyleCache(
@@ -618,7 +641,7 @@ export default function createGridComponent({
         );
         const isRtl = direction === 'rtl';
         itemStyleCache[key] = style = {
-          position: 'absolute',
+          position: isPinned ? 'fixed' : 'absolute',
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
           top: getRowOffset(this.props, rowIndex, this._instanceProps),
