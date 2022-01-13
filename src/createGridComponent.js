@@ -468,7 +468,7 @@ export default function createGridComponent({
           // wrap items into divs
           items.push(
             createElement('div', {
-              children: items,
+              children: rowItems,
               key: rowIndex,
               style: {
                 position: 'relative',
