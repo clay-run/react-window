@@ -422,7 +422,7 @@ export default function createGridComponent({
 
       const [rowStartIndex, rowStopIndex] = this._getVerticalRangeToRender();
 
-      let estimatedWidth = getEstimatedTotalWidth(
+      let firstEstimatedTotalWidth = getEstimatedTotalWidth(
         this.props,
         this._instanceProps
       );
@@ -478,10 +478,11 @@ export default function createGridComponent({
               key: rowIndex,
               style: {
                 position: 'absolute',
+                display: 'flex',
                 height: this._getItemStyle(rowIndex, 0, false).height,
-                top: this._getItemStyle(rowIndex, 0, false).top,
+                top: getRowOffset(this.props, rowIndex, this._instanceProps),
                 left: 0,
-                width: estimatedWidth,
+                width: firstEstimatedTotalWidth,
               },
             })
           )
@@ -660,6 +661,10 @@ export default function createGridComponent({
           this._instanceProps
         );
         const isRtl = direction === 'rtl';
+
+        // need to trigger for metadata computing
+        getRowOffset(this.props, rowIndex, this._instanceProps)
+
         itemStyleCache[key] = style = {
           position: isPinned ? 'sticky' : 'absolute',
           zIndex: isPinned ? 999 : 99,
