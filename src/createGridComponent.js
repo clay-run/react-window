@@ -471,9 +471,9 @@ export default function createGridComponent({
               children: rowItems,
               key: rowIndex,
               style: {
-                position: 'relative',
-                height: this._getItemStyle(rowIndex, 0, false).height,
-                top: this._getItemStyle(rowIndex, 0, false).top,
+                position: 'absolute',
+                height: getRowHeight(this.props, rowIndex, this._instanceProps),
+                top: getRowOffset(this.props, rowIndex, this._instanceProps),
                 left: 0,
                 width: 90000000000,
               },
@@ -659,7 +659,7 @@ export default function createGridComponent({
           zIndex: isPinned ? 999 : 99,
           left: isRtl ? undefined : offset,
           right: isRtl ? offset : undefined,
-          top: getRowOffset(this.props, rowIndex, this._instanceProps),
+          top: 0,
           height: getRowHeight(this.props, rowIndex, this._instanceProps),
           width: getColumnWidth(this.props, columnIndex, this._instanceProps),
         };
