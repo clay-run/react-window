@@ -469,7 +469,7 @@ export default function createGridComponent({
           items.push(
             createElement('div', {
               children: items,
-              ref: innerRef,
+              key: rowIndex,
               style: {
                 position: 'relative',
                 height: this._getItemStyle(rowIndex, 0, false).height,
