@@ -1,5 +1,6 @@
 {
-  "name": "react-window",
+  "name": "@clay-run/react-window",
+  "private": true,
   "version": "1.8.6",
   "description":
     "React components for efficiently rendering large, scrollable lists and tabular data",
